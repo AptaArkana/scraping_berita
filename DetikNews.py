@@ -67,8 +67,18 @@ class DetikNewsApi:
                     })
         return pd.DataFrame(data)
 
-    def search(self, query, page_number=1, detail=False):
-        url = self.build_search_url(query, page_number)
-        search_response = get(url)
-        parse_result = self.parse(search_response, detail)
-        return parse_result
+    def search(self, query, num_pages=1, detail=False):
+        data = []
+
+        for page_number in range(1, num_pages + 1):
+            url = self.build_search_url(query, page_number)
+            search_response = get(url)
+            parse_result = self.parse(search_response, detail)
+            data.append(parse_result)
+
+        # Menggabungkan hasil dari semua halaman ke dalam satu DataFrame
+        if data:
+            combined_data = pd.concat(data, ignore_index=True)
+            return combined_data
+        else:
+            return pd.DataFrame()
