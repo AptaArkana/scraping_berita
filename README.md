@@ -1,3 +1,5 @@
 # Scraping Berita
 Program untuk melakukan scraping dari portal berita metro, detik dan turnbackhoax, cara penggunaan :
-1. Import packages yang ingin dilakukan `DetikNewsApi`
+<ol type="1">
+  <li>Import packages yang ingin dilakukan `DetikNewsApi`</li>
+</ol>
