@@ -12,14 +12,14 @@ class MetroNewsAPI:
         self.search_url = 'https://www.metrotvnews.com'
 
     def build_search_url(self, query: str, page_number: int):
-        """ Building search url with query input, we can jump to specific page number"""
+        """Untuk mencari berita yang sesuai dengan query dan mengambil sesuai dengan halamannya"""
         if page_number == 1:
             return f"{self.search_url}/search?query={query}"
         else:
             return f"{self.search_url}/search/{query}/{page_number}"
 
     def scrape_articles(self, query: str, max_pages: int):
-        """ Scrape articles based on the query and maximum number of pages """
+        """Inti scraping"""
         data = []
 
         for page in range(1, max_pages + 1):
