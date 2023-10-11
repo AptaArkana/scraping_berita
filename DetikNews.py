@@ -11,26 +11,27 @@ class DetikNewsApi:
         self.search_url = 'https://www.detik.com/search/searchall?'
 
     def build_search_url(self, query: str, page_number: int):
-        """ Building search url with query input, we can jump to specific page number"""
+        """Untuk mencari berita yang sesuai dengan query dan mengambil sesuai dengan halamannya"""
         qs = f'query={query}'
         qs2 = '&siteid=2&sortby=time&sorttime=0&page='
         return self.search_url + qs + qs2 + str(page_number)
 
     def build_detail_url(self, url: str):
-        """ Build detail URL will turn off pagination in detail page """
+        """Url detailnya"""
         a = urlsplit(url)
         qs = 'single=1'
         detail_url = a.scheme + '://' + a.netloc + a.path + '?' + qs
         return detail_url
 
     def result_count(self, search_response):
-        """ Search result count, need search response page """
+        """Jumlah pencarian"""
         soup = BeautifulSoup(search_response.text, 'html.parser')
         tag = soup.find('span', 'fl text').text
         count = [int(s) for s in tag.split() if s.isdigit()]
         return count[0]
 
     def detail(self, url: str) -> str:
+        """Inti berita"""
         detail_url = self.build_detail_url(url)
         req = get(detail_url)
         soup = BeautifulSoup(req.text, 'html.parser')
@@ -44,6 +45,7 @@ class DetikNewsApi:
         return body
 
     def parse(self, search_response, detail):
+        """Inti scraping"""
         soup = BeautifulSoup(search_response.text, 'html.parser')
         tag = soup.find_all('article')
         data = []
@@ -68,6 +70,7 @@ class DetikNewsApi:
         return pd.DataFrame(data)
 
     def search(self, query, num_pages=1, detail=False):
+        """Fungsi untuk scrapings"""
         data = []
 
         for page_number in range(1, num_pages + 1):
